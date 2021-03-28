@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { isAuth, signout } from '../auth/helpers';
+import "../styles.css"
 
 const Layout = ({ children, match, history }) => {
     const isActive = path => {
@@ -18,6 +19,14 @@ const Layout = ({ children, match, history }) => {
                     Home
                 </Link>
             </li>
+
+            {isAuth() &&  isAuth().role === 'subscriber' && (
+                <li className="nav-item">
+                    <Link className="nav-link" style={isActive('/Ngocard')} to="/Ngocard">
+                      NgoCard
+                    </Link>
+                </li>
+            )}  
 
             {!isAuth() && (
                 <Fragment>
@@ -41,6 +50,8 @@ const Layout = ({ children, match, history }) => {
                     </Link>
                 </li>
             )}
+
+           
 
             {isAuth() && isAuth().role === 'subscriber' && (
                 <li className="nav-item">
