@@ -75,9 +75,36 @@ const Admin = ({ history }) => {
                 toast.error(error.response.data.error);
             });
     };
+    
+    const adminLinks = () => {
+        return (
+            <div className="card ">
+                <h4 className="card-header ">Admin Links</h4>
+                <ul className="list-group">
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/create/category">
+                            Create Category
+                        </Link>
+                    </li>
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/create/ngo">
+                            Create Ngo page
+                        </Link>
+                    </li>
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/admin/orders">
+                            View Donations
+                        </Link>
+                    </li>
+                  
+                </ul>
+            </div>
+        );
+    };
 
     const updateForm = () => (
         <form>
+              <p className="lead  ">Profile update</p>
             <div className="form-group">
                 <label className="text-muted">Role</label>
                 <input defaultValue={role} type="text" className="form-control" disabled />
@@ -106,12 +133,16 @@ const Admin = ({ history }) => {
     );
 
     return (
-        <Layout>
-            <div className="col-md-6 offset-md-3">
+        <Layout
+        className="container-fluid"
+        title="Dashboard"
+        >
+            <div className="row mt-5">
                 <ToastContainer />
-                <h1 className="pt-5 text-center">Admin</h1>
-                <p className="lead text-center">Profile update</p>
-                {updateForm()}
+                <div className="col-4">{adminLinks()}</div>
+                <div className="col-8">{updateForm()}</div>
+              
+               
             </div>
         </Layout>
     );
