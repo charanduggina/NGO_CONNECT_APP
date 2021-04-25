@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import {ShowImage,ShowCertificateImage, ShowScheduleImage} from './ShowImage';
+import {ShowImage,ShowCertificateImage,ShowScheduleImage} from './ShowImage';
 
 
 const CardMain = ({
@@ -25,19 +25,19 @@ const CardMain = ({
       <div className="card-header ">{product.name}</div>
       <div className="card-body">
           <ShowImage item ={product} url= "ngo" />
-          <p mt-4> Week Schedule</p>
-          <ShowScheduleImage item ={product} url= "ngo" />
+          <p mt-4> Certificates</p>
+          <ShowCertificateImage item ={product} url= "ngo" />
         <p>Location :  {product.location} </p>
         <p>PhoneNo:{product.phone} </p>
         <p >Rating: {product.rating}</p>
           {showViewButton(showViewProductButton)}
-          <Link to= "/Ngo/donate" className="mr-2" >
+          <Link to= {`/Ngo/donate/${product._id}`} className="mr-2" >
    
         <button className="btn btn-outline-primary mt-2 mb-2">
         Donate
        </button>
        </Link>
-       <Link to= "/Ngo/volunteer" className="mr-2" >
+       <Link to={`/Ngo/volunteer/${product._id}`}  className="mr-2" >
    
    <button className="btn btn-outline-primary mt-2 mb-2">
     Volunteer
