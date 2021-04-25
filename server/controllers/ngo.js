@@ -13,7 +13,8 @@ exports.ngoById = (req, res, next, id) => {     //for CRUD ops
                     error: 'ngo not found'
                 });
             }
-            req.ngo = ngo;  //if a ngos found
+            req.ngo = ngo; 
+            console.log("ngo id is",req.ngo.id) //if a ngos found
             next();
         });
 };
@@ -21,7 +22,7 @@ exports.ngoById = (req, res, next, id) => {     //for CRUD ops
 exports.read = (req, res) => {
     req.ngo.photo = undefined;
     req.ngo.certficate_photo = undefined;
-    req.ngo. schedule_photo = undefined;  //photo baad mein bhejenge dusre method se
+    req.ngo.schedule_photo = undefined;  //photo baad mein bhejenge dusre method se
     return res.json(req.ngo);
 };
 
@@ -139,6 +140,27 @@ exports.update = (req, res) => {
             ngo.photo.data = fs.readFileSync(files.photo.path);
             ngo.photo.contentType = files.photo.type;
         }
+        if (files.certficate_photo) {
+
+            if (files.certficate_photo.size > 2000000) {       //>1MB, error msg
+                return res.status(400).json({
+                    error: 'Image should be less than 2mb in size'
+                });
+            }
+            ngo.certficate_photo.data = fs.readFileSync(files.certficate_photo.path);
+            ngo.certficate_photo.contentType = files.certficate_photo.type;
+        }
+        
+        if (files.schedule_photo) {
+
+            if (files.schedule_photo.size > 2000000) {       //>1MB, error msg
+                return res.status(400).json({
+                    error: 'Image should be less than 2mb in size'
+                });
+            }
+            ngo.schedule_photo.data = fs.readFileSync(files.schedule_photo.path);
+            ngo.schedule_photo.contentType = files.schedule_photo.type;
+        }
 
         ngo.save((err, result) => {
             if (err) {
@@ -190,7 +212,8 @@ exports.listSearch = (req, res) => {
                 });
             }
             res.json(ngos);
-        }).select('-photo');
+        }).select('-photo') .select('-schedule_photo')
+        .select('-certficate_photo');
     }
 };
 
@@ -295,4 +318,30 @@ exports.certficate_photo = (req, res, next) => {   //response not JSON. jpg/pdf 
         return res.send(req.ngo.certficate_photo.data);
     }
     next();
+};
+
+exports.RateNgo= (req, res) => {
+   
+   console.log(req.body);
+
+   const ngo = new Ngo({
+    rating: req.body.rating,
+    count : req.body.count
+  });
+  Ngo.findByIdAndUpdate({_id: req.body.ngoId},{rating: req.body.rating,count :req.body.count} ).then(
+    () => {
+      res.status(201).json({
+        message: 'Rating updated successfully!'
+      });
+    }
+  ).catch(
+    (error) => {
+        console.log(error)
+      res.status(400).json({
+        error: error
+      });
+    }
+  );
+
+  
 };
