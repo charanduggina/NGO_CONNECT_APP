@@ -14,7 +14,7 @@ const AddProduct = () => {
         phone: '',
         photo: '',
         schedule_photo: '',
-        certificate_photo: '',
+        certficate_photo: '',
         loading: false,
         error: '',
         createdProduct: '',
@@ -61,7 +61,7 @@ const AddProduct = () => {
             formData.set(name, value);
             setValues({ ...values, [name]: value });
         }
-        else if(name==='certificate_photo'){
+        else if(name==='certficate_photo'){
             const value =  event.target.files[0];
             formData.set(name, value);
             setValues({ ...values, [name]: value });
@@ -94,7 +94,7 @@ const AddProduct = () => {
                     description: '',
                     photo: '',
                     schedule_photo: '',
-                    certificate_photo: '',
+                    certficate_photo: '',
                     phone: '',
                     loading: false,
                     createdProduct: data.name
@@ -156,7 +156,7 @@ const AddProduct = () => {
             <h4>Post Certificate Photo</h4>
             <div className="form-group">
                 <label className="btn btn-secondary">
-                    <input onChange={handleChange('certificate_photo')} type="file" name="certificate_photo" accept="image/*" />
+                    <input onChange={handleChange('certficate_photo')} type="file" name="certficate_photo" accept="image/*" />
                 </label>
             </div>
 
