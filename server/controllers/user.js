@@ -1,4 +1,7 @@
 const User = require('../models/user');
+const { errorHandler } = require('../helpers/dbErrorHandler');
+const DonateList = require('../models/donateList');
+const Ngo = require('../models/ngo');
 
 exports.userById = (req, res, next, id) => {
     User.findById(id).exec((err, user) => {     //for CRUD ops
@@ -66,4 +69,59 @@ exports.update = (req, res) => {
             res.json(updatedUser);
         });
     });
+};
+
+exports.addamountOrderToUserHistory = (req, res, next) => {
+    let history = [];
+
+        history.push({
+            _id:  req.body.ngoId,
+            name: req.body.name,
+            transaction_id: req.body.transactionId,
+            amount: req.body.donateamount
+        });
+   
+
+    User.findOneAndUpdate({ _id: req.body.userId}, { $push: { history: history } }, { new: true }, (error, data) => {
+        if (error) {
+            return res.status(400).json({
+                error: 'Could not update user purchase history'
+            });
+        }
+        next();
+    });
+};
+
+exports.addobjectOrderToUserHistory = (req, res, next) => {
+    let history = [];
+
+        history.push({
+            _id:  req.body.ngoId,
+            name: req.body.name,
+            objects:  req.body.donateobjects
+        });
+
+    User.findOneAndUpdate({ _id: req.body.userId }, { $push: { history: history } }, { new: true }, (error, data) => {
+        if (error) {
+            return res.status(400).json({
+                error: 'Could not update user purchase history'
+            });
+        }
+        next();
+    });
+};
+
+exports.purchaseHistory = (req, res) => {
+    DonateList.find({ donarId: req.profile._id })
+        .populate('donarId', '_id name')
+        .populate('recieverId', '_id name ')
+        .sort('-created')
+        .exec((err, orders) => {
+            if (err) {
+                return res.status(400).json({
+                    error: errorHandler(err)
+                });
+            }
+            res.json(orders);
+        });
 };
