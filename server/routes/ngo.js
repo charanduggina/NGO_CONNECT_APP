@@ -14,13 +14,15 @@ const {
     schedule_photo,
     certficate_photo,
     listSearch,
-    listBySearch
+    listBySearch,
+    RateNgo
 } = require("../controllers/ngo");
 const { requireSignin, isAuth, adminMiddleware,isAdmin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
 
 router.get("/ngo/:ngoId", read);
-router.post("/ngo/create/:userId", requireSignin, isAuth, isAdmin,create);  //method name--create. called in "controllers"
+router.post("/ngo/create/:userId", requireSignin, isAuth, isAdmin,create); 
+router.post("/ngo/rate", RateNgo); //method name--create. called in "controllers"
 router.delete("/ngo/:ngoId/:userId", requireSignin, isAuth, isAdmin, remove);
 router.put("/ngo/:ngoId/:userId", requireSignin, isAuth, isAdmin, update);
 
